@@ -1,0 +1,109 @@
+path: /var/fasttmp/bruno_dsn/
+parquet_name: unb_cic_ds_parquet
+
+attack_category:
+    DDoS:
+        - DDoS-RSTFINFlood
+        - DDoS-PSHACK_Flood
+        - DDoS-SYN_Flood
+        - DDoS-UDP_Flood
+        - DDoS-TCP_Flood
+        - DDoS-ICMP_Flood
+        - DDoS-SynonymousIP_Flood
+        - DDoS-HTTP_Flood
+        - DDoS-ACK_Fragmentation
+        - DDoS-UDP_Fragmentation
+        - DDoS-ICMP_Fragmentation
+        - DDoS-SlowLoris
+    DoS:
+        - DoS-UDP_Flood
+        - DoS-SYN_Flood
+        - DoS-TCP_Flood
+        - DoS-HTTP_Flood
+    Mirai:
+        - Mirai-greeth_flood
+        - Mirai-greip_flood
+        - Mirai-udpplain
+    Spoofing:
+        - DNS_Spoofing
+        - MITM-ArpSpoofing
+    Recon:
+        - Recon-PingSweep
+        - Recon-OSScan
+        - Recon-PortScan
+        - VulnerabilityScan
+        - Recon-HostDiscovery
+    Web:
+        - BrowserHijacking
+        - Backdoor_Malware
+        - XSS
+        - Uploading_Attack
+        - SqlInjection
+        - CommandInjection
+    BruteForce:
+        - DictionaryBruteForce
+    Benign:
+        - BenignTraffic
+
+
+protocol_layer:
+    Application Layer:
+        - HTTP
+        - HTTPS
+        - DNS
+        - Telnet
+        - SMTP
+        - SSH
+        - IRC
+        - DHCP
+    Transport Layer:
+        - TCP
+        - UDP
+    Internet Layer:
+        - ICMP
+        - IPv
+    Link Layer:
+        - ARP
+        - LLC
+
+
+features:
+    flag:
+        - fin_flag_number
+        - syn_flag_number
+        - rst_flag_number
+        - psh_flag_number
+        - ack_flag_number
+        - ece_flag_number
+        - cwr_flag_number
+
+    flag_counts:
+        - ack_count
+        - syn_count
+        - fin_count
+        - urg_count
+        - rst_count
+
+    packet:
+        - Protocol Type
+        - Header_Length
+        - Tot sum
+        - Min
+        - Max
+        - AVG
+        - Std
+        - Tot size
+        - Magnitue
+        - Radius
+        - Variance
+        - Covariance
+        - Weight
+
+    flow:
+        - flow_duration
+        - Duration
+        - Number
+        - IAT
+        - Rate
+        - Srate
+        - Drate
