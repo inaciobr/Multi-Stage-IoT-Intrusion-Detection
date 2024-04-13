@@ -1,6 +1,7 @@
 path: /var/fasttmp/bruno_dsn/
 parquet_name: unb_cic_ds_parquet
 
+
 attack_category:
     DDoS:
         - DDoS-RSTFINFlood
@@ -76,14 +77,12 @@ features:
         - ack_flag_number
         - ece_flag_number
         - cwr_flag_number
-
     flag_counts:
         - ack_count
         - syn_count
         - fin_count
         - urg_count
         - rst_count
-
     packet:
         - Protocol Type
         - Header_Length
@@ -98,7 +97,6 @@ features:
         - Variance
         - Covariance
         - Weight
-
     flow:
         - flow_duration
         - Duration
