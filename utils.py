@@ -9,8 +9,10 @@ def get_constants():
     with open(os.path.join(os.getcwd(), '..', 'constants.yaml')) as f:
         constants = yaml.safe_load(f)
 
-    constants['parquet_path'] = os.path.join(constants['path'], constants['parquet_name'])
     constants['csv_path'] = os.path.join(constants['path'], 'unb_cic_csv')
+    constants['parquet_path'] = os.path.join(constants['path'], constants['parquet_name'])
+    constants['refined_parquet_path'] = os.path.join(constants['path'], constants['refined_parquet_name'])
+
     constants['features']['protocol'] = reduce(op.concat, constants['protocol_layer'].values())
 
     constants['attack_category_map'] = {
