@@ -2,6 +2,10 @@ path: /var/fasttmp/bruno_dsn/
 parquet_name: unb_cic_ds.parquet
 refined_parquet_name: unb_cic_ds_refined.parquet
 
+target_columns:
+    - general_label
+    - label
+
 attack_category:
     DDoS:
         - DDoS-RSTFINFlood
@@ -97,7 +101,6 @@ features:
         - Variance
         - Covariance
         - Weight
-
     flow:
         - flow_duration
         - Duration

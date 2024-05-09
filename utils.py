@@ -28,3 +28,18 @@ def get_constants():
     }
 
     return constants
+
+
+def get_balanced_weights(df, target):
+    counts = df[target].value_counts()
+    num_labels = len(counts)
+
+    return 1. / df[target].map(counts).astype('int') / num_labels
+
+
+def get_features_list(df, constants):
+    return [
+        col
+        for col in df.columns
+        if col not in constants['target_columns']
+    ]
