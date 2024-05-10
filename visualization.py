@@ -1,6 +1,17 @@
+import math
+
+import pandas as pd
+
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import seaborn as sns
+
+
+eng_formatter = mpl.ticker.EngFormatter(places=1, sep='')
+
+
+def full_eng_formatter(value, total):
+    return f"{eng_formatter(value)} ({value / total:.1%})"
 
 
 def plot_frequency_barh(column, feature, color_map=None):
