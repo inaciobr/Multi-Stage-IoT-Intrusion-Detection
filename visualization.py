@@ -10,15 +10,19 @@ import seaborn as sns
 eng_formatter = mpl.ticker.EngFormatter(places=1, sep='')
 
 
-def full_eng_formatter(value, total):
+def eng_formatter_full(value, total):
     return f"{eng_formatter(value)} ({value / total:.1%})"
 
 
-def plot_frequency_barh(column, feature, color_map=None):
+def plot_frequency_barh(column, feature, title=None, color_map=None, get_totals=None):
     fig, ax = plt.subplots(figsize=(14, 5 + column.nunique() // 8))
-    fig.suptitle(f'{feature} Frequency', fontsize=16)
+    fig.suptitle(title if title else f'{feature} Frequency', fontsize=16)
 
     counts = column.value_counts(ascending=True)
+
+    if not get_totals:
+        get_totals = lambda key: sum(counts)
+
     barh = counts.plot(
         kind='barh',
         width=0.8,
@@ -29,11 +33,12 @@ def plot_frequency_barh(column, feature, color_map=None):
     h_displacement = 0.005 * max(counts)
     y_displacement = -0.005 * len(counts)
 
-    for index, value in enumerate(counts):
+    
+    for index, (key, value) in enumerate(counts.items()):
         plt.text(
             x=value + h_displacement,
             y=index + y_displacement,
-            s=full_eng_formatter(value, sum(counts))
+            s=eng_formatter_full(value, get_totals(key))
         )
 
     ax.set_xlabel('Frequency')
@@ -63,7 +68,7 @@ def plot_binary_features(df, size, title, color_map=None):
 
     for p in ax.patches:
         ax.annotate(
-            full_eng_formatter(p.get_height(), size),
+            eng_formatter_full(p.get_height(), size),
             (p.get_x() + p.get_width() / 2, p.get_height()),
             ha='center',
             va='center',
