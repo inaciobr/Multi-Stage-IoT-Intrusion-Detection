@@ -14,6 +14,35 @@ def eng_formatter_full(value, total):
     return f"{eng_formatter(value)} ({value / total:.1%})"
 
 
+def get_color_maps(constants):
+    general_attack_color = {
+        category: mpl.colormaps['tab10'](i)
+        for i, category in enumerate(sorted(constants['attack_category']))
+    }
+
+    attack_type_color = {
+        label: general_attack_color[constants['attack_category_map'][label]]
+        for label in constants['attack_category_map']
+    }
+
+    network_layer_color = {
+        layer: mpl.colormaps['Dark2'](i)
+        for i, layer in enumerate(constants['protocol_layer'])
+    }
+
+    protocol_color = {
+        protocol: network_layer_color[constants['protocol_layer_map'][protocol]]
+        for protocol in constants['features']['protocol']
+    }
+
+    return {
+        'general_attack': general_attack_color,
+        'attack_type': attack_type_color,
+        'network_layer': network_layer_color,
+        'protocol': protocol_color
+    }
+
+
 def plot_frequency_barh(column, feature, title=None, color_map=None, get_totals=None):
     fig, ax = plt.subplots(figsize=(14, 5 + column.nunique() // 8))
     fig.suptitle(title if title else f'{feature} Frequency', fontsize=16)
@@ -49,7 +78,7 @@ def plot_frequency_barh(column, feature, title=None, color_map=None, get_totals=
     plt.tight_layout()
 
 
-def plot_binary_features(df, size, title, color_map=None):
+def plot_binary_features(df, size=None, title=None, feature='Count', color_map=None):
     fig, ax = plt.subplots(figsize=(14, 6))
     fig.suptitle(title, fontsize=16)
 
@@ -62,13 +91,13 @@ def plot_binary_features(df, size, title, color_map=None):
 
     ax.set_xlabel(None)
     plt.xticks(rotation=45, ha='right')
-    ax.set_ylabel('Count')
+    ax.set_ylabel(feature)
     ax.set_ylim(top=1.05 * ax.get_ylim()[1])
     ax.yaxis.set_major_formatter(eng_formatter)
 
     for p in ax.patches:
         ax.annotate(
-            eng_formatter_full(p.get_height(), size),
+            eng_formatter_full(p.get_height(), size) if size else eng_formatter(p.get_height()),
             (p.get_x() + p.get_width() / 2, p.get_height()),
             ha='center',
             va='center',
