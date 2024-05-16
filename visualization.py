@@ -25,20 +25,20 @@ def get_color_maps(constants):
         for label in constants['attack_category_map']
     }
 
-    network_layer_color = {
+    protocol_layer_color = {
         layer: mpl.colormaps['Dark2'](i)
         for i, layer in enumerate(constants['protocol_layer'])
     }
 
     protocol_color = {
-        protocol: network_layer_color[constants['protocol_layer_map'][protocol]]
+        protocol: protocol_layer_color[constants['protocol_layer_map'][protocol]]
         for protocol in constants['features']['protocol']
     }
 
     return {
         'general_attack': general_attack_color,
         'attack_type': attack_type_color,
-        'network_layer': network_layer_color,
+        'protocol_layer': protocol_layer_color,
         'protocol': protocol_color
     }
 
@@ -86,7 +86,7 @@ def plot_binary_features(df, size=None, title=None, feature='Count', color_map=N
     counts.plot.bar(
         ax=ax,
         legend=False,
-        color=tuple(map(color_map.get, counts.index)) if color_map else None
+        color=counts.index.map(color_map) if color_map else None
     )
 
     ax.set_xlabel(None)
@@ -155,7 +155,7 @@ def print_percentage_styled(df):
 
 def print_percentage_df(df, label, features):
     percentage_matrix = df.groupby(label, observed=False).agg({
-        col: 'mean'
+        col: lambda x: x.astype('bool').mean()
         for col in features
     })
 
