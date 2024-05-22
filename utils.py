@@ -6,13 +6,21 @@ from functools import reduce
 import yaml
 
 
+
+
+with open(os.path.join(os.getcwd(), '..', 'constants.yaml')) as f:
+    _constants = yaml.safe_load(f)
+
+
 def get_constants():
-    with open(os.path.join(os.getcwd(), '..', 'constants.yaml')) as f:
-        constants = yaml.safe_load(f)
+    constants = _constants
 
     constants['csv_path'] = os.path.join(constants['path'], 'unb_cic_csv')
     constants['parquet_path'] = os.path.join(constants['path'], constants['parquet_name'])
     constants['refined_parquet_path'] = os.path.join(constants['path'], constants['refined_parquet_name'])
+    constants['source_name'] = os.path.basename(constants['source_url'])
+    constants['source_path'] = os.path.join(constants['path'], constants['source_name'])
+    constants['model_path'] = os.path.join(constants['path'], 'model')
 
     constants['features']['protocol'] = reduce(op.concat, constants['protocol_layer'].values())
 
@@ -31,11 +39,11 @@ def get_constants():
     return constants
 
 
-def get_features_list(df, constants):
+def get_features_list(df):
     return [
         col
         for col in df.columns
-        if col not in constants['target_columns']
+        if col not in _constants['target_columns']
     ]
 
 

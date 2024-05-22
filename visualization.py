@@ -1,12 +1,22 @@
 import math
 
 import pandas as pd
-
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import seaborn as sns
 
+from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
 
+import utils
+
+mpl.rcParams["axes.spines.right"] = False
+mpl.rcParams["axes.spines.top"] = False
+
+pd.set_option('display.max_columns', 100)
+pd.set_option('display.float_format', '{:.2f}'.format)
+
+
+_constants = utils.get_constants()
 eng_formatter = mpl.ticker.EngFormatter(places=1, sep='')
 
 
@@ -14,7 +24,9 @@ def eng_formatter_full(value, total):
     return f"{eng_formatter(value)} ({value / total:.1%})"
 
 
-def get_color_maps(constants):
+def get_color_maps():
+    constants = _constants
+
     general_attack_color = {
         category: mpl.colormaps['tab10'](i)
         for i, category in enumerate(sorted(constants['attack_category']))
@@ -43,7 +55,13 @@ def get_color_maps(constants):
     }
 
 
-def plot_frequency_barh(column, feature, title=None, color_map=None, get_totals=None):
+def plot_frequency_barh(
+    column,
+    feature,
+    title=None,
+    color_map=None,
+    get_totals=None
+):
     fig, ax = plt.subplots(figsize=(14, 5 + column.nunique() // 8))
     fig.suptitle(title if title else f'{feature} Frequency', fontsize=16)
 
@@ -78,7 +96,13 @@ def plot_frequency_barh(column, feature, title=None, color_map=None, get_totals=
     plt.tight_layout()
 
 
-def plot_binary_features(df, size=None, title=None, feature='Count', color_map=None):
+def plot_binary_features(
+    df,
+    size=None,
+    title=None,
+    feature='Count',
+    color_map=None
+):
     fig, ax = plt.subplots(figsize=(14, 6))
     fig.suptitle(title, fontsize=16)
 
@@ -109,7 +133,14 @@ def plot_binary_features(df, size=None, title=None, feature='Count', color_map=N
     plt.tight_layout()
 
 
-def plot_box_attack_features(df, features, label_column, title, log_features={}, color_map=None):
+def plot_box_attack_features(
+    df,
+    features,
+    label_column,
+    title,
+    log_features={},
+    color_map=None
+):
     num_plots = len(features)
     ncols = 2
     nrows = math.ceil(num_plots / ncols)
@@ -143,6 +174,20 @@ def plot_box_attack_features(df, features, label_column, title, log_features={},
         fig.delaxes(ax)
 
     plt.tight_layout(pad=1.8)
+
+
+def plot_confusion_matrix(y_test, y_pred):
+    fig, ax = plt.subplots(figsize=(10, 6))
+
+    cmp = ConfusionMatrixDisplay(
+        confusion_matrix(y_test, y_pred),
+        display_labels=y_test.cat.categories
+    )
+
+    plt.xticks(rotation=90)
+    fig.tight_layout()
+
+    cmp.plot(xticks_rotation='vertical', values_format='', ax=ax)
 
 
 def print_percentage_styled(df):

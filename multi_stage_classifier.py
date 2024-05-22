@@ -41,12 +41,18 @@ class MultiStageClassifier(BaseEstimator, ClassifierMixin):
         previous_labels = {}
 
         for stage in self.stages:
+            stage_mask = proba.max(axis=1) == proba[:, index_default]
+            stage_idx = stage_mask.nonzero()[0]
+
             idx = [
                 list(self.classes_).index(label)
                 for label in stage.model.classes_
             ]
 
-            proba[:, idx] = proba[:, [index_default]] * stage.model.predict_proba(X)
+            previous_default_proba = proba[stage_idx, index_default][:, None]
+            stage_proba = stage.model.predict_proba(X[stage_mask])
+
+            proba[stage_idx[:, None], idx] = previous_default_proba * stage_proba
 
         return proba
 
