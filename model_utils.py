@@ -59,7 +59,6 @@ def test_model(
     y_train,
     y_test
 ):
-    y_train = 
     train_model(model, X_train, y_train)
     y_pred = utils.run_with_time(lambda: model.predict(X_test), title="Predict")
 
