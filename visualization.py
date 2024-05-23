@@ -5,7 +5,7 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
+from sklearn.metrics import ConfusionMatrixDisplay
 
 import utils
 
@@ -176,18 +176,15 @@ def plot_box_attack_features(
     plt.tight_layout(pad=1.8)
 
 
-def plot_confusion_matrix(y_test, y_pred):
+def plot_confusion_matrix(cm, labels=None):
     fig, ax = plt.subplots(figsize=(10, 6))
 
-    cmp = ConfusionMatrixDisplay(
-        confusion_matrix(y_test, y_pred),
-        display_labels=y_test.cat.categories
-    )
+    cmp = ConfusionMatrixDisplay(cm, display_labels=labels)
 
     plt.xticks(rotation=90)
     fig.tight_layout()
 
-    cmp.plot(xticks_rotation='vertical', values_format='', ax=ax)
+    cmp.plot(xticks_rotation='vertical', cmap='Blues', values_format='', ax=ax)
 
 
 def print_percentage_styled(df):

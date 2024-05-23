@@ -6,8 +6,6 @@ from functools import reduce
 import yaml
 
 
-
-
 with open(os.path.join(os.getcwd(), '..', 'constants.yaml')) as f:
     _constants = yaml.safe_load(f)
 

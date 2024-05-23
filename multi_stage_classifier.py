@@ -8,7 +8,12 @@ ModelStage = namedtuple('ModelStage', ['model', 'labels'])
 
 
 class MultiStageClassifier(BaseEstimator, ClassifierMixin):
-    def __init__(self, stages, max_train_size=None, default_label='Benign'):
+    def __init__(
+        self,
+        stages,
+        max_train_size=None,
+        default_label='Benign'
+    ):
         self.default_label = default_label
         self.stages = stages
         self.max_train_size = max_train_size
