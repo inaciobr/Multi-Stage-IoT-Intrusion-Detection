@@ -54,6 +54,8 @@ def train_model(
     if save_name:
         model_dump(model, save_name)
 
+    return model
+
 
 def show_metrics(cm, labels):
     viz.plot_confusion_matrix(cm, labels)
