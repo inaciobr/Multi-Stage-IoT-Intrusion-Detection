@@ -162,6 +162,6 @@ def model_dump(model, model_name):
     joblib.dump(model, model_path)
 
 
-def model_load(model, model_name):
+def model_load(model_name):
     model_path = os.path.join(_constants['model_path'], f"{model_name}.joblib")
     return joblib.load(model_path)
