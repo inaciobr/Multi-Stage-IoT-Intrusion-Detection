@@ -94,9 +94,9 @@ def get_classification_metrics(
         true_support = true_support.sum()
         predicted_support = predicted_support.sum()
 
-    precision = TP / predicted_support
+    precision = TP / np.where(predicted_support != 0, predicted_support, 1)
     recall = TP / true_support
-    f1_score = 2 * precision * recall / (precision + recall)
+    f1_score = 2 * precision * recall / np.where(precision + recall != 0, precision + recall, 1)
 
     if average == 'macro':
         precision = precision.mean()
@@ -116,7 +116,7 @@ def get_classification_metrics(
 def classification_report_from_confusion_matrix(
     confusion_matrix,
     labels,
-    fmt_metrics='{:10.3f}',
+    fmt_metrics='{:10.4f}',
     fmt_support='{:10}'
 ):
     classification_metrics = get_classification_metrics(confusion_matrix)

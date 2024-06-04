@@ -19,40 +19,36 @@ pd.set_option('display.float_format', '{:.2f}'.format)
 _constants = utils.get_constants()
 eng_formatter = mpl.ticker.EngFormatter(places=1, sep='')
 
+_general_attack_color = {
+    category: mpl.colormaps['tab10'](i)
+    for i, category in enumerate(sorted(_constants['attack_category']))
+}
+
+_attack_type_color = {
+    label: _general_attack_color[_constants['attack_category_map'][label]]
+    for label in _constants['attack_category_map']
+}
+
+_protocol_layer_color = {
+    layer: mpl.colormaps['Dark2'](i)
+    for i, layer in enumerate(_constants['protocol_layer'])
+}
+
+_protocol_color = {
+    protocol: _protocol_layer_color[_constants['protocol_layer_map'][protocol]]
+    for protocol in _constants['features']['protocol']
+}
+
+color_map = {
+    'general_attack': _general_attack_color,
+    'attack_type': _attack_type_color,
+    'protocol_layer': _protocol_layer_color,
+    'protocol': _protocol_color
+}
+
 
 def eng_formatter_full(value, total):
     return f"{eng_formatter(value)} ({value / total:.1%})"
-
-
-def get_color_maps():
-    constants = _constants
-
-    general_attack_color = {
-        category: mpl.colormaps['tab10'](i)
-        for i, category in enumerate(sorted(constants['attack_category']))
-    }
-
-    attack_type_color = {
-        label: general_attack_color[constants['attack_category_map'][label]]
-        for label in constants['attack_category_map']
-    }
-
-    protocol_layer_color = {
-        layer: mpl.colormaps['Dark2'](i)
-        for i, layer in enumerate(constants['protocol_layer'])
-    }
-
-    protocol_color = {
-        protocol: protocol_layer_color[constants['protocol_layer_map'][protocol]]
-        for protocol in constants['features']['protocol']
-    }
-
-    return {
-        'general_attack': general_attack_color,
-        'attack_type': attack_type_color,
-        'protocol_layer': protocol_layer_color,
-        'protocol': protocol_color
-    }
 
 
 def plot_frequency_barh(
@@ -177,7 +173,8 @@ def plot_box_attack_features(
 
 
 def plot_confusion_matrix(cm, labels=None):
-    fig, ax = plt.subplots(figsize=(10, 6))
+    n_labels = len(cm)
+    fig, ax = plt.subplots(figsize=(5*(1 + n_labels // 5), 3*(1 + n_labels // 5)))
 
     cmp = ConfusionMatrixDisplay(cm, display_labels=labels)
 
