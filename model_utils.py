@@ -166,4 +166,8 @@ def model_dump(model, model_name):
 
 def model_load(model_name):
     model_path = os.path.join(_constants['model_path'], f"{model_name}.joblib")
+
+    model_size = os.path.getsize(model_path) / 1024**3
+    print(f"Loading model '{model_name}' ({model_size:.2f} GB)")
+
     return joblib.load(model_path)
