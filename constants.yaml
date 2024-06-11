@@ -1,6 +1,5 @@
 path: /var/fasttmp/dsn/
-parquet_name: unb_cic_ds.parquet
-refined_parquet_name: unb_cic_ds_refined.parquet
+parquet_name: unb_cic_ds
 source_url: http://205.174.165.80/IOTDataset/CIC_IOT_Dataset2023/Dataset/CSV/CICIoT2023.zip
 seed: 6958
 

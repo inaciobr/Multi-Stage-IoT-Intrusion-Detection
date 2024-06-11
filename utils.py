@@ -14,8 +14,9 @@ def get_constants():
     constants = _constants
 
     constants['csv_path'] = os.path.join(constants['path'], 'unb_cic_csv')
-    constants['parquet_path'] = os.path.join(constants['path'], constants['parquet_name'])
-    constants['refined_parquet_path'] = os.path.join(constants['path'], constants['refined_parquet_name'])
+    constants['parquet_path'] = os.path.join(constants['path'], constants['parquet_name'] + '.parquet')
+    constants['train_parquet_path'] = os.path.join(constants['path'], constants['parquet_name'] + '_train.parquet')
+    constants['test_parquet_path'] = os.path.join(constants['path'], constants['parquet_name'] + '_test.parquet')
     constants['source_name'] = os.path.basename(constants['source_url'])
     constants['source_path'] = os.path.join(constants['path'], constants['source_name'])
     constants['model_path'] = os.path.join(constants['path'], 'model')
