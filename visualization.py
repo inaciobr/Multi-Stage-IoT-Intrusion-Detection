@@ -50,15 +50,15 @@ color_map = {
 def eng_formatter_full(value, total):
     return f"{eng_formatter(value)} ({value / total:.1%})"
 
-
 def plot_frequency_barh(
     column,
     feature,
     title=None,
     color_map=None,
-    get_totals=None
+    get_totals=None,
+    small=False
 ):
-    fig, ax = plt.subplots(figsize=(14, 5 + column.nunique() // 8))
+    fig, ax = plt.subplots(figsize=(7 if small else 14, 5 + column.nunique() // 8))
     fig.suptitle(title if title else f'{feature} Frequency', fontsize=16)
 
     counts = column.value_counts(ascending=True)
@@ -66,7 +66,7 @@ def plot_frequency_barh(
     if not get_totals:
         get_totals = lambda key: sum(counts)
 
-    barh = counts.plot(
+    counts.plot(
         kind='barh',
         width=0.8,
         ax=ax,
